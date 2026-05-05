@@ -81,12 +81,9 @@ def health():
 @app.route("/", methods=["GET"])
 def home():
     return jsonify({"message": "API IA opérationnelle"})
-
-
 @app.route("/predict", methods=["POST"])
 def predict():
     data = request.json
-
     age = data.get("age", 20)
     heures = data.get("heures_par_semaine", 5)
     preference = 1 if data.get("preference") == "solo" else 2
@@ -95,7 +92,6 @@ def predict():
         "PC": 2,
         "console": 3
     }.get(data.get("plateforme"), 2)
-
     # Prédiction
     prediction = model.predict([[age, heures, preference, plateforme]])
     proba = model.predict_proba([[age, heures, preference, plateforme]])
