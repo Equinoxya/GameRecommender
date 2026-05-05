@@ -4,6 +4,10 @@
         "result": { "genre": "Casual", "exemple": "Candy Crush, Alto's Odyssey" }
     },
     {
+        "conditions": { "plateforme": "mobile", "preference": "multijoueur" },
+        "result": { "genre": "Battle Royale", "exemple": "PUBG Mobile, Fortnite Mobile" }
+    },
+    {
         "conditions": { "plateforme": "PC", "preference": "solo" },
         "result": { "genre": "RPG", "exemple": "Witcher 3, Elden Ring" }
     },
@@ -18,5 +22,41 @@
     {
         "conditions": { "plateforme": "console", "preference": "solo" },
         "result": { "genre": "Aventure", "exemple": "God of War, Zelda" }
+    },
+    {
+        "conditions": { "plateforme": "PC", "preference": "solo", "genre_favori": "stratégie" },
+        "result": { "genre": "Stratégie", "exemple": "Civilization VI, Age of Empires IV" }
+    },
+    {
+        "conditions": { "plateforme": "PC", "preference": "multijoueur", "genre_favori": "RPG" },
+        "result": { "genre": "MMO", "exemple": "World of Warcraft, Final Fantasy XIV" }
+    },
+    {
+        "conditions": { "plateforme": "console", "preference": "solo", "genre_favori": "action" },
+        "result": { "genre": "Action-Aventure", "exemple": "Spider-Man, Assassin's Creed" }
+    },
+    {
+        "conditions": { "plateforme": "console", "preference": "multijoueur", "genre_favori": "action" },
+        "result": { "genre": "FPS", "exemple": "Call of Duty, Halo" }
+    },
+    {
+        "conditions": { "plateforme": "PC", "preference": "solo", "genre_favori": "horreur" },
+        "result": { "genre": "Survival Horror", "exemple": "Resident Evil, Phasmophobia" }
+    },
+    {
+        "conditions": { "plateforme": "mobile", "preference": "solo", "genre_favori": "RPG" },
+        "result": { "genre": "RPG", "exemple": "Genshin Impact, Honkai Star Rail" }
+    },
+    {
+        "conditions": { "plateforme": "PC", "preference": "multijoueur", "genre_favori": "stratégie" },
+        "result": { "genre": "MOBA", "exemple": "League of Legends, Dota 2" }
+    },
+    {
+        "conditions": { "plateforme": "console", "preference": "solo", "genre_favori": "RPG" },
+        "result": { "genre": "JRPG", "exemple": "Final Fantasy XVI, Persona 5" }
+    },
+    {
+        "conditions": { "plateforme": "PC", "preference": "solo", "genre_favori": "simulation" },
+        "result": { "genre": "Simulation", "exemple": "The Sims 4, Stardew Valley" }
     }
 ]
