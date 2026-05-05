@@ -58,7 +58,13 @@ app.post("/recommend", async (req, res) => {
         explication: "Configuration hybride : règles métier + prédiction IA"
     });
 });
-
+setInterval(async()=> {
+    try{
+        await fetch("https://gamerecommender-wqz2.onrender.com/health")
+        await fetch("https://gamerecommender-py.onrender.com/health")
+    } catch (e){}
+}, 10*60*1000)
+app.get("/health", (req, res)=> res.json({status: "Ok"}))
 app.listen(3000, () => {
     console.log("Server running on port 3000")
 })

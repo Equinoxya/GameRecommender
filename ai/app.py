@@ -39,8 +39,9 @@ assert len(X) == len(y), "X et y doivent avoir la même taille"
 # Modèle
 model = DecisionTreeClassifier()
 model.fit(X, y)
-
-
+@app.route('/health')
+def health():
+    return {"status" : "Ok"}
 @app.route("/", methods=["GET"])
 def home():
     return jsonify({"message": "API IA opérationnelle"})
