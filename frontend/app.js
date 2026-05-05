@@ -38,7 +38,7 @@ async function recommend() {
         document.getElementById('tag-ia').textContent = 'IA: ' + (config.genre_ia || '—');
         result.classList.add('show');
     } catch (e) {
-        err.textContent = 'Serveur non disponible. Lance node index.js et model_api.py.';
+        err.textContent = 'Serveur non disponible.';
         err.classList.add('show');
     } finally {
         loading.classList.remove('show');
