@@ -7,11 +7,9 @@ app.use((req, res, next) => {
     next()
 })
 const rules = require("./data/configRules.json")
-
 function findConfig(input) {
     let bestScore = 0;
     let bestResult = null;
-
     for (let rule of rules) {
         let score = 0;
         for (let key of Object.keys(rule.conditions)) {
@@ -26,19 +24,15 @@ function findConfig(input) {
     }
     return bestResult;
 }
-
 app.post("/recommend", async (req, res) => {
     const input = req.body;
-
     // Normalisation
     const plateformeMap = { "pc": "PC", "mobile": "mobile", "console": "console" };
     const preferenceMap = { "solo": "solo", "multijoueur": "multijoueur" };
     input.plateforme = plateformeMap[input.plateforme?.toLowerCase()] || input.plateforme;
     input.preference = preferenceMap[input.preference?.toLowerCase()] || input.preference;
-
     // 1. Règles métier
     const config = findConfig(input);
-
     // 2. Prédiction IA
     const aiResponse = await fetch("https://gamerecommender-py.onrender.com/predict", {
         method: "POST",
@@ -51,7 +45,6 @@ app.post("/recommend", async (req, res) => {
         })
     });
     const aiResult = await aiResponse.json();
-
     // 3. Fusion
     res.json({
         config: { ...config, ...aiResult },

@@ -1,9 +1,7 @@
 from flask import Flask, request, jsonify
 from sklearn.tree import DecisionTreeClassifier
 import os
-
 app = Flask(__name__)
-
 # Data by Claude en attendant le CSV
 # [age, heures_par_semaine, preference (1=solo, 2=multi), plateforme (1=mobile, 2=PC, 3=console)]
 X = [
@@ -52,7 +50,6 @@ X = [
     [28, 20, 2, 2],  # MMO
     [32, 18, 2, 2],  # MMO
 ]
-
 y = [
     "FPS", "FPS", "FPS", "FPS",
     "Sport", "Sport", "Sport", "Sport",
@@ -68,10 +65,8 @@ y = [
     "Survival Horror", "Survival Horror",
     "MMO", "MMO", "MMO",
 ]
-
 # Sécurité : vérifier cohérence dataset
 assert len(X) == len(y), "X et y doivent avoir la même taille"
-
 # Modèle
 model = DecisionTreeClassifier()
 model.fit(X, y)
@@ -95,18 +90,14 @@ def predict():
     # Prédiction
     prediction = model.predict([[age, heures, preference, plateforme]])
     proba = model.predict_proba([[age, heures, preference, plateforme]])
-
     # Détail des probabilités
     classes = model.classes_
     proba_dict = dict(zip(classes, proba[0]))
-
     return jsonify({
         "genre_ia": prediction[0],
         "confiance": float(max(proba[0])),
         "details": proba_dict
     })
-
-
 # Lancement compatible Render
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

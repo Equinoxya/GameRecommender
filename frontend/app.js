@@ -6,7 +6,6 @@ document.querySelectorAll('.options').forEach(group => {
         }
     });
 });
-
 async function recommend() {
     const plateforme = document.querySelector('#plateforme .active')?.dataset.val;
     const preference = document.querySelector('#preference .active')?.dataset.val;
@@ -15,7 +14,6 @@ async function recommend() {
     const err = document.getElementById('err');
     const loading = document.getElementById('loading');
     const result = document.getElementById('result');
-
     if (!plateforme || !preference) {
         err.classList.add('show');
         return;
@@ -23,7 +21,6 @@ async function recommend() {
     err.classList.remove('show');
     result.classList.remove('show');
     loading.classList.add('show');
-
     try {
         const res = await fetch("https://gamerecommender-wqz2.onrender.com/recommend", {
             method: 'POST',
