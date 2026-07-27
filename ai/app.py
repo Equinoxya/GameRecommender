@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 import os
 
 app = Flask(__name__)
 
 # --- Dataset ---
+# [age, heures_par_semaine, preference (1=solo, 2=multi), plateforme (1=mobile, 2=PC, 3=console)]
 X = [
     [16, 20, 2, 2], [20, 15, 2, 2], [19, 25, 2, 2], [22, 18, 2, 2],
     [25, 10, 2, 3], [30, 5,  2, 3], [28, 8,  2, 3], [35, 6,  2, 3],
@@ -37,11 +38,15 @@ y = [
     "MMO", "MMO", "MMO"
 ]
 
+# Validation de la structure du dataset
 assert len(X) == len(y), "X et y doivent avoir la même taille"
 
-# --- Modèle ---
-# max_depth évite l'overfitting sévère sur un petit dataset
-model = DecisionTreeClassifier(max_depth=5, random_state=42)
+# --- Entraînement du modèle Random Forest ---
+model = RandomForestClassifier(
+    n_estimators=100,  # 100 arbres de décision combinés
+    max_depth=5,       # Limite la profondeur pour éviter l'overfitting
+    random_state=42    # Garantit des résultats reproductibles
+)
 model.fit(X, y)
 
 @app.route('/health', methods=["GET"])
@@ -50,17 +55,17 @@ def health():
 
 @app.route("/", methods=["GET"])
 def home():
-    return jsonify({"message": "API IA opérationnelle"}), 200
+    return jsonify({"message": "API IA opérationnelle (Random Forest)"}), 200
 
 @app.route("/predict", methods=["POST"])
 def predict():
     data = request.get_json(silent=True)
     
-    # Sécurité : vérifier la présence du body JSON
+    # Sécurité : vérifier qu'un corps JSON valide a été envoyé
     if not data:
         return jsonify({"error": "Requête invalide, un body JSON est requis."}), 400
 
-    # Extraction sécurisée des features
+    # Parsing et valeurs par défaut
     age = data.get("age", 20)
     heures = data.get("heures_par_semaine", 5)
     
@@ -71,13 +76,14 @@ def predict():
     plateforme_raw = str(data.get("plateforme", "")).lower()
     plateforme = plateforme_map.get(plateforme_raw, 2)
 
-    # Inférence
+    # Prédictions
     features = [[age, heures, preference, plateforme]]
     prediction = model.predict(features)[0]
     proba = model.predict_proba(features)[0]
 
-    # Construction de la réponse
-    proba_dict = {cls: round(float(p), 3) for cls, p in zip(model.classes_, proba)}
+    # Détails des probabilités nettoyés
+    classes = model.classes_
+    proba_dict = {cls: round(float(p), 3) for cls, p in zip(classes, proba)}
 
     return jsonify({
         "genre_ia": prediction,
@@ -85,7 +91,7 @@ def predict():
         "details": proba_dict
     }), 200
 
+# Alignement avec le port d'hébergement (Render, Heroku, etc.)
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    # Ne pas utiliser debug=True en prod
     app.run(host="0.0.0.0", port=port)
